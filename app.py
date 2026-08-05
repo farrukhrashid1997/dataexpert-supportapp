@@ -6,7 +6,7 @@ import streamlit as st
 st.title("Lakebase Connection Test")
 
 # Try the resource-injected env var first (adjust key name if needed)
-lakebase_url = os.environ.get("lakebase-url")
+lakebase_url = os.environ.get("lakebase-url") or os.environ.get("LAKEBASE_URL")
 
 if not lakebase_url:
     st.error("Could not find lakebase-url in environment variables.")
