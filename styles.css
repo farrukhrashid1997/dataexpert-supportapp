@@ -141,10 +141,18 @@ div[class*="danger-zone"] .stButton > button[kind="primary"]:hover {
   fill: var(--surface) !important;
 }
 
-/* Keep the filter row contained: flex columns need min-width:0 or a wide
-   set of selected chips pushes the column past its share of the row
-   instead of wrapping inside it. */
-[data-testid="column"] {
+/* Keep flex layouts (st.columns rows, and the vertical blocks/element
+   containers nested inside each column) from spilling past their share of
+   the row. Flex/grid items default to min-width:auto, which means they
+   refuse to shrink below their content's intrinsic width — a wide badge
+   row, a long metric label, or enough filter chips will then push the
+   element wider than its column instead of wrapping inside it. This has
+   to be set at every nested level (column -> vertical block -> element
+   container), since each one independently defaults back to min-width:auto. */
+[data-testid="stColumn"],
+[data-testid="stVerticalBlock"],
+[data-testid="stHorizontalBlock"],
+[data-testid="stElementContainer"] {
   min-width: 0;
 }
 .stMultiSelect,
