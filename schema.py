@@ -1,11 +1,4 @@
-"""
-schema.py
-Creates the tickets/ticket_messages tables in Lakebase (if they don't already
-exist) and seeds sample data (only if the tables are currently empty).
 
-Safe to call on every app startup — CREATE TABLE IF NOT EXISTS won't error on
-redeploy, and seeding only happens once, when `tickets` is empty.
-"""
 
 import lakebase
 
