@@ -109,7 +109,7 @@ except Exception:
     st.error("Couldn't connect to the database — please try again shortly.")
     st.stop()
 
-st.title("🎫 Internal Support Tickets")
+st.title("Internal Support Tickets")
 
 # --- Stats ---
 st.markdown("### Overview")
