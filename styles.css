@@ -30,15 +30,22 @@ label {
   color: var(--ink);
 }
 
-/* Bordered containers (st.container(border=True)) act as cards */
-[data-testid="stVerticalBlockBorderWrapper"] {
+/* Ticket cards: st.container(border=True, key="ticket_card_<id>").
+   Deliberately scoped to the st-key-* class Streamlit generates from an
+   explicit `key=`, NOT to an internal testid. Which testid marks a
+   "bordered" vertical block vs. a plain column/row wrapper has changed
+   across Streamlit versions (in some it's a distinct testid, in others
+   bordered and plain blocks share the exact same testid and only differ
+   by an internal, unversioned CSS-in-JS class) — targeting the internal
+   testid risks either doing nothing or, worse, applying card styling to
+   every plain column/row in the app depending on which version is
+   deployed. `key=` is the documented, version-stable way to hook a
+   specific element. */
+[class*="st-key-ticket_card_"] {
   background: var(--surface);
   border-radius: 16px;
   border: 1px solid rgba(23, 20, 15, 0.06);
   box-shadow: 0 1px 3px rgba(23, 20, 15, 0.06);
-}
-[data-testid="stVerticalBlockBorderWrapper"] > div > div[data-testid="stVerticalBlock"] {
-  gap: 0.6rem;
   padding: 1.25rem 1.5rem;
 }
 
