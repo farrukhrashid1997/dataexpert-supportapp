@@ -30,18 +30,21 @@ label {
   color: var(--ink);
 }
 
-/* Ticket cards: st.container(border=True, key="ticket_card_<id>").
-   Deliberately scoped to the st-key-* class Streamlit generates from an
-   explicit `key=`, NOT to an internal testid. Which testid marks a
+/* Ticket cards: st.container(border=True) with an invisible
+   .ticket-card-marker element inside (see app.py). Which testid marks a
    "bordered" vertical block vs. a plain column/row wrapper has changed
    across Streamlit versions (in some it's a distinct testid, in others
    bordered and plain blocks share the exact same testid and only differ
    by an internal, unversioned CSS-in-JS class) — targeting the internal
-   testid risks either doing nothing or, worse, applying card styling to
-   every plain column/row in the app depending on which version is
-   deployed. `key=` is the documented, version-stable way to hook a
-   specific element. */
-[class*="st-key-ticket_card_"] {
+   testid directly risks either doing nothing or, worse, applying card
+   styling to every plain column/row in the app depending on which
+   version is deployed. `st.container(key=...)` would be the clean fix
+   but isn't supported on every Streamlit version, so instead: the
+   marker is a direct child of exactly one stVerticalBlock (the card's
+   own), so this only ever matches that one container, never an
+   ancestor further up (e.g. the column wrapping *all* the cards) or an
+   unrelated one elsewhere on the page. */
+[data-testid="stVerticalBlock"]:has(> [data-testid="stElementContainer"] .ticket-card-marker) {
   background: var(--surface);
   border-radius: 16px;
   border: 1px solid rgba(23, 20, 15, 0.06);

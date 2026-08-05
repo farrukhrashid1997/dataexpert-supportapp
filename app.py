@@ -195,7 +195,12 @@ else:
         st.subheader("All tickets")
         st.caption(f"{len(tickets)} ticket(s)")
         for t in tickets:
-            with st.container(border=True, key=f"ticket_card_{t['ticket_id']}"):
+            with st.container(border=True):
+                # Invisible marker so styles.css can target *this specific*
+                # bordered container via a `:has()` selector — st.container
+                # has no `key=` support on every Streamlit version, so this
+                # is the version-safe way to scope the card CSS precisely.
+                st.markdown('<span class="ticket-card-marker"></span>', unsafe_allow_html=True)
                 st.markdown(f"**#{t['ticket_id']} — {t['title']}**")
                 st.caption(f"by {t['created_by']}")
                 st.markdown(ticket_badges_html(t), unsafe_allow_html=True)
