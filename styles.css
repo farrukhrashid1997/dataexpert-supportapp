@@ -1,0 +1,152 @@
+/* "Sunday" design system — warm, minimal, non-clinical. */
+
+:root {
+  --paper: #F0EFE9;
+  --surface: #FFFFFF;
+  --pine: #153D31;
+  --pine-tint: #DCE6E1;
+  --tangerine: #FF5A1F;
+  --tangerine-tint: #FFE4D6;
+  --tangerine-text: #B23E12;
+  --gold: #E8A72C;
+  --gold-tint: #FBEBC9;
+  --gold-text: #8A6210;
+  --ink: #17140F;
+  --neutral-tint: #EAE8E0;
+}
+
+.stApp {
+  background-color: var(--paper);
+  color: var(--ink);
+}
+
+h1, h2, h3, h4, h5, h6, p, span, label, .stMarkdown, .stCaption {
+  color: var(--ink);
+}
+
+/* Bordered containers (st.container(border=True)) act as cards */
+[data-testid="stVerticalBlockBorderWrapper"] {
+  background: var(--surface);
+  border-radius: 16px;
+  border: 1px solid rgba(23, 20, 15, 0.06);
+  box-shadow: 0 1px 3px rgba(23, 20, 15, 0.06);
+}
+
+/* Expanders styled as soft cards */
+[data-testid="stExpander"] {
+  background: var(--surface);
+  border-radius: 16px;
+  border: 1px solid rgba(23, 20, 15, 0.06);
+  overflow: hidden;
+}
+[data-testid="stExpander"] summary {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+/* Buttons: rounded, pine primary, no default streamlit blue */
+.stButton > button,
+.stFormSubmitButton > button {
+  border-radius: 999px;
+  border: 1px solid var(--pine);
+  color: var(--pine);
+  background: var(--surface);
+  font-weight: 600;
+  transition: all 0.15s ease;
+}
+.stButton > button:hover,
+.stFormSubmitButton > button:hover {
+  border-color: var(--pine);
+  color: var(--surface);
+  background: var(--pine);
+}
+.stButton > button[kind="primary"],
+.stFormSubmitButton > button[kind="primary"] {
+  background: var(--pine);
+  color: var(--surface);
+  border: 1px solid var(--pine);
+}
+.stButton > button[kind="primary"]:hover,
+.stFormSubmitButton > button[kind="primary"]:hover {
+  background: #0f2e25;
+  border-color: #0f2e25;
+}
+.stButton > button:disabled {
+  opacity: 0.45;
+  color: var(--ink);
+  border-color: rgba(23, 20, 15, 0.2);
+  background: var(--neutral-tint);
+}
+
+/* Danger / delete button gets the tangerine accent to pop */
+div[class*="danger-zone"] .stButton > button[kind="primary"] {
+  background: var(--tangerine);
+  border-color: var(--tangerine);
+}
+div[class*="danger-zone"] .stButton > button[kind="primary"]:hover {
+  background: #cc4415;
+  border-color: #cc4415;
+}
+
+/* Inputs */
+.stTextInput input,
+.stTextArea textarea,
+.stSelectbox [data-baseweb="select"] > div,
+.stMultiSelect [data-baseweb="select"] > div {
+  border-radius: 10px !important;
+  border-color: rgba(23, 20, 15, 0.15) !important;
+  background: var(--surface) !important;
+}
+.stTextInput input:focus,
+.stTextArea textarea:focus {
+  border-color: var(--pine) !important;
+  box-shadow: 0 0 0 1px var(--pine) !important;
+}
+
+/* Multiselect pills use pine, not default blue */
+.stMultiSelect [data-baseweb="tag"] {
+  background-color: var(--pine) !important;
+  border-radius: 999px !important;
+}
+
+/* Metrics */
+[data-testid="stMetric"] {
+  background: var(--surface);
+  border-radius: 14px;
+  padding: 0.9rem 1rem;
+  border: 1px solid rgba(23, 20, 15, 0.06);
+}
+[data-testid="stMetricLabel"] {
+  color: var(--ink);
+  opacity: 0.65;
+}
+[data-testid="stMetricValue"] {
+  color: var(--pine);
+}
+
+/* Dividers: soft, not harsh */
+hr {
+  border-color: rgba(23, 20, 15, 0.08) !important;
+}
+
+/* Status / priority / category badges */
+.badge {
+  display: inline-block;
+  padding: 0.18rem 0.65rem;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-right: 0.35rem;
+  margin-bottom: 0.2rem;
+  white-space: nowrap;
+}
+.badge-tangerine { background: var(--tangerine-tint); color: var(--tangerine-text); }
+.badge-urgent { background: var(--tangerine); color: var(--surface); }
+.badge-gold { background: var(--gold-tint); color: var(--gold-text); }
+.badge-pine { background: var(--pine-tint); color: var(--pine); }
+.badge-neutral { background: var(--neutral-tint); color: var(--ink); }
+
+/* Alerts: keep them warm, rounded */
+[data-testid="stAlert"] {
+  border-radius: 12px;
+}

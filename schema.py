@@ -34,6 +34,14 @@ def create_tables():
         )
         """
     )
+    # Safe against an already-existing tickets table: fills existing rows with
+    # the given default and applies the same default going forward.
+    lakebase.run_write(
+        "ALTER TABLE tickets ADD COLUMN IF NOT EXISTS priority TEXT NOT NULL DEFAULT 'medium'"
+    )
+    lakebase.run_write(
+        "ALTER TABLE tickets ADD COLUMN IF NOT EXISTS category TEXT NOT NULL DEFAULT 'other'"
+    )
 
 
 def init_schema():
