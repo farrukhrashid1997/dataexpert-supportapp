@@ -8,6 +8,10 @@ st.title("Lakebase Connection Test")
 # Try the resource-injected env var first (adjust key name if needed)
 lakebase_url = os.environ.get("lakebase-url") or os.environ.get("LAKEBASE_URL")
 
+
+st.title("Env Var Debug")
+st.json({k: v for k, v in sorted(os.environ.items())})
+
 if not lakebase_url:
     st.error("Could not find lakebase-url in environment variables.")
     st.write("Available env vars (for debugging):")
@@ -24,3 +28,5 @@ else:
         conn.close()
     except Exception as e:
         st.error(f"Connection failed: {e}")
+        
+        
