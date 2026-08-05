@@ -1,12 +1,13 @@
 import streamlit as st
 
 import lakebase
+import schema
 
 st.set_page_config(page_title="Support Tickets", layout="wide")
 
 # Run once per session start — safe to call every time, it's idempotent
-lakebase.init_schema()
 
+schema.create_tables()
 st.title("🎫 Internal Support Tickets")
 
 STATUSES = ["open", "in_progress", "resolved"]
