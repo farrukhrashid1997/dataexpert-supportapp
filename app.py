@@ -26,7 +26,7 @@ STATUS_BADGE_CLASS = {
 }
 PRIORITY_BADGE_CLASS = {
     "urgent": "badge-urgent",
-    "high": "badge-tangerine",
+    "high": "badge-high",
     "medium": "badge-pine",
     "low": "badge-neutral",
 }

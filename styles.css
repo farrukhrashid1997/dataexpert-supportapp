@@ -31,6 +31,19 @@ h1, h2, h3, h4, h5, h6, p, span, label, .stMarkdown, .stCaption {
   border: 1px solid rgba(23, 20, 15, 0.06);
   box-shadow: 0 1px 3px rgba(23, 20, 15, 0.06);
 }
+[data-testid="stVerticalBlockBorderWrapper"] > div > div[data-testid="stVerticalBlock"] {
+  gap: 0.6rem;
+  padding: 1.25rem 1.5rem;
+}
+
+/* Forms (st.form) get the same card treatment — no padding by default */
+[data-testid="stForm"] {
+  background: var(--surface);
+  border-radius: 16px;
+  border: 1px solid rgba(23, 20, 15, 0.06);
+  box-shadow: 0 1px 3px rgba(23, 20, 15, 0.06);
+  padding: 1.5rem 1.75rem;
+}
 
 /* Expanders styled as soft cards */
 [data-testid="stExpander"] {
@@ -42,6 +55,10 @@ h1, h2, h3, h4, h5, h6, p, span, label, .stMarkdown, .stCaption {
 [data-testid="stExpander"] summary {
   color: var(--ink);
   font-weight: 600;
+  padding: 0.9rem 1.25rem;
+}
+[data-testid="stExpanderDetails"] {
+  padding: 0.5rem 1.25rem 1.25rem;
 }
 
 /* Buttons: rounded, pine primary, no default streamlit blue */
@@ -103,10 +120,17 @@ div[class*="danger-zone"] .stButton > button[kind="primary"]:hover {
   box-shadow: 0 0 0 1px var(--pine) !important;
 }
 
-/* Multiselect pills use pine, not default blue */
+/* Multiselect pills use pine, not default blue — text/icon must be light
+   on the dark pine fill, otherwise it reads as near-black-on-green. */
 .stMultiSelect [data-baseweb="tag"] {
   background-color: var(--pine) !important;
   border-radius: 999px !important;
+}
+.stMultiSelect [data-baseweb="tag"] span {
+  color: var(--surface) !important;
+}
+.stMultiSelect [data-baseweb="tag"] svg {
+  fill: var(--surface) !important;
 }
 
 /* Metrics */
@@ -145,6 +169,13 @@ hr {
 .badge-gold { background: var(--gold-tint); color: var(--gold-text); }
 .badge-pine { background: var(--pine-tint); color: var(--pine); }
 .badge-neutral { background: var(--neutral-tint); color: var(--ink); }
+/* Priority "high" reuses the tangerine hue but as an outline, so it doesn't
+   visually double a tangerine status badge (e.g. "Open") sitting next to it. */
+.badge-high {
+  background: transparent;
+  color: var(--tangerine-text);
+  border: 1px solid var(--tangerine);
+}
 
 /* Alerts: keep them warm, rounded */
 [data-testid="stAlert"] {
