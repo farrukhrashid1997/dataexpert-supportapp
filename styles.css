@@ -20,7 +20,13 @@
   color: var(--ink);
 }
 
-h1, h2, h3, h4, h5, h6, p, span, label, .stMarkdown, .stCaption {
+/* Note: no blanket `p, span { color: ink }` rule here — .stApp already
+   cascades ink to everything by inheritance. A rule targeting `p`/`span`
+   directly would win over any ancestor's color (e.g. a button's hover
+   fill), since a direct match always beats an inherited value regardless
+   of specificity — that previously left button/badge text stuck at ink
+   even when sitting on a dark pine/tangerine background. */
+label {
   color: var(--ink);
 }
 
@@ -77,14 +83,16 @@ h1, h2, h3, h4, h5, h6, p, span, label, .stMarkdown, .stCaption {
   color: var(--surface);
   background: var(--pine);
 }
+/* st.form_submit_button renders kind="primaryFormSubmit", not "primary" —
+   both variants need covering or the form buttons fall back to unstyled. */
 .stButton > button[kind="primary"],
-.stFormSubmitButton > button[kind="primary"] {
+.stFormSubmitButton > button[kind="primaryFormSubmit"] {
   background: var(--pine);
   color: var(--surface);
   border: 1px solid var(--pine);
 }
 .stButton > button[kind="primary"]:hover,
-.stFormSubmitButton > button[kind="primary"]:hover {
+.stFormSubmitButton > button[kind="primaryFormSubmit"]:hover {
   background: #0f2e25;
   border-color: #0f2e25;
 }
@@ -131,6 +139,21 @@ div[class*="danger-zone"] .stButton > button[kind="primary"]:hover {
 }
 .stMultiSelect [data-baseweb="tag"] svg {
   fill: var(--surface) !important;
+}
+
+/* Keep the filter row contained: flex columns need min-width:0 or a wide
+   set of selected chips pushes the column past its share of the row
+   instead of wrapping inside it. */
+[data-testid="column"] {
+  min-width: 0;
+}
+.stMultiSelect,
+.stMultiSelect > div {
+  min-width: 0;
+  width: 100%;
+}
+.stMultiSelect [data-baseweb="select"] > div {
+  flex-wrap: wrap !important;
 }
 
 /* Metrics */

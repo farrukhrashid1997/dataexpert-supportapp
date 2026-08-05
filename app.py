@@ -78,16 +78,26 @@ def ticket_badges_html(t):
 
 
 def fetch_tickets(statuses, priorities, categories):
-    # An empty selection on any filter dimension means "match nothing" —
-    # standard multiselect-filter semantics.
-    if not statuses or not priorities or not categories:
-        return []
+    # An empty selection on a filter dimension means "don't filter on this" —
+    # so no filters selected at all shows every ticket, and picking just one
+    # value in one dimension (e.g. status=open) doesn't also require picking
+    # something in the others.
+    clauses, params = [], []
+    if statuses:
+        clauses.append("status = ANY(%s)")
+        params.append(statuses)
+    if priorities:
+        clauses.append("priority = ANY(%s)")
+        params.append(priorities)
+    if categories:
+        clauses.append("category = ANY(%s)")
+        params.append(categories)
+    where_sql = f"WHERE {' AND '.join(clauses)}" if clauses else ""
     sql = (
         "SELECT ticket_id, title, status, priority, category, created_by, created_at "
-        "FROM tickets WHERE status = ANY(%s) AND priority = ANY(%s) AND category = ANY(%s) "
-        "ORDER BY created_at DESC"
+        f"FROM tickets {where_sql} ORDER BY created_at DESC"
     )
-    return safe_run_query(sql, (statuses, priorities, categories))
+    return safe_run_query(sql, tuple(params) if params else None)
 
 
 load_css()
@@ -154,13 +164,14 @@ st.divider()
 
 # --- Filters ---
 st.markdown("### Filters")
+st.caption("Leave a filter empty to include every value for it.")
 filter_cols = st.columns(3)
 with filter_cols[0]:
-    selected_statuses = st.multiselect("Status", STATUSES, default=STATUSES, key="filter_status")
+    selected_statuses = st.multiselect("Status", STATUSES, default=[], key="filter_status")
 with filter_cols[1]:
-    selected_priorities = st.multiselect("Priority", PRIORITIES, default=PRIORITIES, key="filter_priority")
+    selected_priorities = st.multiselect("Priority", PRIORITIES, default=[], key="filter_priority")
 with filter_cols[2]:
-    selected_categories = st.multiselect("Category", CATEGORIES, default=CATEGORIES, key="filter_category")
+    selected_categories = st.multiselect("Category", CATEGORIES, default=[], key="filter_category")
 
 st.divider()
 
@@ -168,7 +179,11 @@ st.divider()
 tickets = fetch_tickets(selected_statuses, selected_priorities, selected_categories)
 
 if not tickets:
-    st.info("No tickets match the current filters.")
+    any_filter_set = selected_statuses or selected_priorities or selected_categories
+    if any_filter_set:
+        st.info("No tickets match the current filters.")
+    else:
+        st.info("No tickets yet.")
 else:
     ticket_ids = [t["ticket_id"] for t in tickets]
     if st.session_state.get("selected_ticket_id") not in ticket_ids:
